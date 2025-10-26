@@ -84,7 +84,7 @@ function dropToSlot(slot, card) {
 }
 
 // === (3) 比對正確順序 ===
-const correctOrder = [3, 1, 2, 8, 4, 9, 12, 7, 6, 10, 11, 5];
+const correctOrder = [3, 1, 2, 8, 4, 9, 12, 7, 6, 10, 5, 11];
 document.getElementById('checkOrder').addEventListener('click', () => {
   slots.forEach((slot, i) => {
     if (parseInt(slot.dataset.num) === correctOrder[i]) {
@@ -94,4 +94,5 @@ document.getElementById('checkOrder').addEventListener('click', () => {
     }
   });
 });
+
 
