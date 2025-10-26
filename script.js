@@ -32,8 +32,9 @@ const cards = document.querySelectorAll('.card');
 const slots = document.querySelectorAll('.image-slot');
 let draggedCard = null;
 
+// 拖曳卡片
 cards.forEach(card => {
-  // 拖曳開始
+  // PC 拖曳
   card.addEventListener('dragstart', e => {
     draggedCard = card;
     e.dataTransfer.setData('text/plain', card.dataset.num);
@@ -44,33 +45,42 @@ cards.forEach(card => {
     card.classList.toggle('flipped');
   });
 
-  // 觸控拖曳 (行動裝置)
+  // 手機觸控拖曳
   card.addEventListener('touchstart', e => { draggedCard = card; });
   card.addEventListener('touchend', e => {
     const touch = e.changedTouches[0];
     const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    if (target && target.classList.contains('image-slot')) {
-      dropToSlot(target);
+
+    if (!draggedCard) return;
+
+    // 找到最近的 image-slot 容器
+    const slot = target.closest('.image-slot');
+    if (slot) {
+      dropToSlot(slot, draggedCard);
     }
     draggedCard = null;
   });
 });
 
-// 放入圖片格
+// 放入圖片格（拖曳或置換）
 slots.forEach(slot => {
   slot.addEventListener('dragover', e => e.preventDefault());
   slot.addEventListener('drop', e => {
     e.preventDefault();
-    dropToSlot(slot);
+    if (draggedCard) dropToSlot(slot, draggedCard);
   });
 });
 
-function dropToSlot(slot) {
-  if (!draggedCard) return;
-  const imgNode = draggedCard.querySelector('.card-inner').cloneNode(true);
+function dropToSlot(slot, card) {
+  // 移除原本 slot 內容
   slot.innerHTML = '';
+
+  // Clone 卡片的內部圖片（.card-inner）
+  const imgNode = card.querySelector('.card-inner').cloneNode(true);
   slot.appendChild(imgNode);
-  slot.dataset.num = draggedCard.dataset.num;
+
+  // 更新 slot 的 dataset，方便比對
+  slot.dataset.num = card.dataset.num;
 }
 
 // === (3) 比對正確順序 ===
@@ -84,3 +94,4 @@ document.getElementById('checkOrder').addEventListener('click', () => {
     }
   });
 });
+
