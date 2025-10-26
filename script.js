@@ -95,4 +95,3 @@ document.getElementById('checkOrder').addEventListener('click', () => {
   });
 });
 
-
