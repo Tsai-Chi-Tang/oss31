@@ -58,23 +58,23 @@ h1 {
   margin-bottom: 40px;
 }
 
-/* 外層容器，允許橫向滾動 */
+/* 外層容器，固定寬度，允許橫向滾動 */
 .image-slots-wrapper {
-  overflow-x: auto; /* 可水平滑動 */
+  width: 100%;              /* 撐滿螢幕寬度 */
+  overflow-x: auto;         /* 可水平滑動 */
   -webkit-overflow-scrolling: touch; /* iOS 平滑滾動 */
   padding-bottom: 10px;
 }
 
 .image-slots {
   display: flex;
-  justify-content: flex-start; /* 左對齊，避免壓縮 */
-  flex-wrap: nowrap;
   gap: 10px;
   padding: 10px 0;
+  flex-wrap: nowrap;        /* 保持一排 */
 }
 
 .image-slot {
-  flex: 0 0 90px; /* 調整格子大小，避免小螢幕超出 */
+  flex: 0 0 90px;           /* 固定寬度，不壓縮 */
   height: 90px;
   border: 2px dashed #aaa;
   background-color: #fafafa;
@@ -104,7 +104,7 @@ button {
 /* 手機小螢幕優化 */
 @media screen and (max-width: 480px) {
   .image-slot {
-    flex: 0 0 70px; /* 手機螢幕格子再縮小 */
+    flex: 0 0 70px;  /* 小螢幕格子再縮小 */
     height: 70px;
   }
 }
