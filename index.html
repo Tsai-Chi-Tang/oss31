@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>地球的歷史</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>地球的歷史</h1>
+
+  <!-- (1) 地球歷史時間軸 -->
+  <div class="timeline">
+    <span class="start">4.6 十億年前 (BYA)</span>
+    <div class="line"></div>
+    <span class="end">現在</span>
+  </div>
+
+  <!-- (2) 單位換算 -->
+  <div class="converter">
+    <label>十億年 (BY): <input type="number" id="byInput" placeholder="輸入數值"></label>
+    <label>百萬年 (MY): <input type="number" id="myInput" placeholder="自動換算"></label>
+    <label>千年 (KY): <input type="number" id="kyInput" placeholder="自動換算"></label>
+  </div>
+
+  <!-- (3) 圖片排列區（12格在同一排） -->
+  <div class="image-area">
+    <div class="image-slots" id="imageSlots">
+      <div class="image-slot" data-index="1"></div>
+      <div class="image-slot" data-index="2"></div>
+      <div class="image-slot" data-index="3"></div>
+      <div class="image-slot" data-index="4"></div>
+      <div class="image-slot" data-index="5"></div>
+      <div class="image-slot" data-index="6"></div>
+      <div class="image-slot" data-index="7"></div>
+      <div class="image-slot" data-index="8"></div>
+      <div class="image-slot" data-index="9"></div>
+      <div class="image-slot" data-index="10"></div>
+      <div class="image-slot" data-index="11"></div>
+      <div class="image-slot" data-index="12"></div>
+    </div>
+    <button id="checkOrder">確定</button>
+  </div>
+
+  <!-- (4) 下方12張可翻轉圖片（4排3張，間距縮小，自動縮放） -->
+  <div class="image-pool" id="imagePool">
+    <div class="card" draggable="true" data-num="1">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f1.jpg" alt="f1"></div>
+        <div class="card-face back"><img src="images/b1.jpg" alt="b1"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="2">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f2.jpg" alt="f2"></div>
+        <div class="card-face back"><img src="images/b2.jpg" alt="b2"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="3">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f3.jpg" alt="f3"></div>
+        <div class="card-face back"><img src="images/b3.jpg" alt="b3"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="4">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f4.jpg" alt="f4"></div>
+        <div class="card-face back"><img src="images/b4.jpg" alt="b4"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="5">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f5.jpg" alt="f5"></div>
+        <div class="card-face back"><img src="images/b5.jpg" alt="b5"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="6">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f6.jpg" alt="f6"></div>
+        <div class="card-face back"><img src="images/b6.jpg" alt="b6"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="7">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f7.jpg" alt="f7"></div>
+        <div class="card-face back"><img src="images/b7.jpg" alt="b7"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="8">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f8.jpg" alt="f8"></div>
+        <div class="card-face back"><img src="images/b8.jpg" alt="b8"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="9">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f9.jpg" alt="f9"></div>
+        <div class="card-face back"><img src="images/b9.jpg" alt="b9"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="10">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f10.jpg" alt="f10"></div>
+        <div class="card-face back"><img src="images/b10.jpg" alt="b10"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="11">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f11.jpg" alt="f11"></div>
+        <div class="card-face back"><img src="images/b11.jpg" alt="b11"></div>
+      </div>
+    </div>
+    <div class="card" draggable="true" data-num="12">
+      <div class="card-inner">
+        <div class="card-face front"><img src="images/f12.jpg" alt="f12"></div>
+        <div class="card-face back"><img src="images/b12.jpg" alt="b12"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+

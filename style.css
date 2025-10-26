@@ -1,0 +1,144 @@
+/* === 基本樣式 === */
+body {
+  background-color: #fff;
+  font-family: "Microsoft JhengHei", sans-serif;
+  text-align: center;
+  margin: 20px;
+}
+
+h1 {
+  font-size: 2em;
+  margin-bottom: 30px;
+}
+
+/* === (1) 地球歷史時間軸 === */
+.timeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px; 
+  font-weight: bold;
+  margin-bottom: 30px;
+  gap: 10px;
+}
+
+.timeline .line {
+  flex: 1;
+  height: 4px;
+  background: black;
+  position: relative;
+}
+
+.timeline .line::after {
+  content: "▶";
+  position: absolute;
+  right: -12px;
+  top: -8px;
+  font-size: 20px;
+  color: black;
+}
+
+/* === (2) 單位換算欄 === */
+.converter {
+  margin-bottom: 40px;
+  font-size: 20px; /* 調大文字大小 */
+}
+
+.converter label {
+  margin: 0 10px;
+}
+
+.converter input {
+  font-size: 16px; /* 調大輸入框文字 */
+  padding: 4px 6px; /* 可選，讓輸入框文字更舒適 */
+}
+
+/* === (3) 圖片排列區 === */
+.image-area {
+  margin-bottom: 40px;
+}
+
+.image-slots {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px;
+}
+
+.image-slot {
+  flex: 0 0 100px;
+  height: 100px;
+  border: 2px dashed #aaa;
+  background-color: #fafafa;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+button {
+  padding: 8px 20px;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+/* 錯誤紅框提示 */
+.wrong {
+  border-color: red !important;
+  box-shadow: 0 0 10px red;
+}
+
+/* === (4) 下方圖片池（4排3張，間距縮小，圖片自動縮放） === */
+/* 圖片池容器 */
+.image-pool {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 一排三張 */
+  gap: 8px; /* 可以調整間距 */
+  width: 100%; /* 撐滿整個畫面寬度 */
+  padding: 10px; /* 左右內邊距 */
+  box-sizing: border-box;
+}
+
+/* 單張圖片卡片 */
+.card {
+  width: 100%;           /* 撐滿格子寬度 */
+  aspect-ratio: 1 / 1;   /* 保持正方形 */
+  perspective: 600px;
+  cursor: pointer;
+}
+
+.card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.card-face.back {
+  transform: rotateY(180deg);
+}
+
+.card-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* 保持比例縮小至符合格子 */
+}
+
