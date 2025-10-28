@@ -72,10 +72,10 @@ function startTouchDrag(card, touch) {
   touchCard = card;
   draggedCard = card;
 
-  // === 修改點：建立幽靈卡片永遠顯示正面 ===
+  // === 建立幽靈卡片（永遠顯示正面） ===
   const originalInner = card.querySelector('.card-inner');
   const ghostInner = originalInner.cloneNode(true);
-  ghostInner.classList.remove('flipped'); // 移除翻轉狀態，確保是正面
+  ghostInner.classList.remove('flipped');
   ghost = ghostInner;
   const scale = 0.5; // 幽靈卡片縮小比例
   ghost.style.position = 'fixed';
@@ -151,6 +151,7 @@ cards.forEach(card => {
     lastTouchClient = { x: t.clientX, y: t.clientY };
   }, { passive: false });
 
+  // === 修正版 touchend（iOS 可放入 slot） ===
   card.addEventListener('touchend', e => {
     clearTimeout(longPressTimer);
     const t = Array.from(e.changedTouches).find(tt => tt.identifier === touchId) || e.changedTouches[0];
@@ -161,7 +162,11 @@ cards.forEach(card => {
       return;
     }
 
+    // 🔹 iOS Safari 修正：暫時隱藏幽靈卡片再取 elementFromPoint
+    if (ghost) ghost.style.display = 'none';
     const target = document.elementFromPoint(t.clientX, t.clientY);
+    if (ghost) ghost.style.display = '';
+
     const slot = target ? target.closest('.image-slot') : null;
     endTouchDrag(slot);
     touchId = null;
@@ -178,7 +183,7 @@ cards.forEach(card => {
 function dropToSlot(slot, card) {
   slot.innerHTML = '';
   const imgNode = card.querySelector('.card-inner').cloneNode(true);
-  imgNode.classList.remove('flipped'); // 放入時也保持正面
+  imgNode.classList.remove('flipped'); // 放入時保持正面
   slot.appendChild(imgNode);
   slot.dataset.num = card.dataset.num;
 }
@@ -195,5 +200,6 @@ document.getElementById('checkOrder').addEventListener('click', () => {
     }
   });
 });
+
 
 
