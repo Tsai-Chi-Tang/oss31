@@ -27,7 +27,7 @@ function convertFrom(unit) {
   if (!isNaN(ky)) kyInput.value = ky;
 }
 
-// === (3) 拖曳與翻轉（手機／平板支援長按拖曳，不干擾滑動） ===
+// === (3) 拖曳與翻轉（iOS / Android 改良版） ===
 const cards = document.querySelectorAll('.card');
 const slots = document.querySelectorAll('.image-slot');
 let draggedCard = null;
@@ -39,6 +39,7 @@ cards.forEach(card => {
     e.dataTransfer.setData('text/plain', card.dataset.num);
   });
 
+  // 點擊翻轉（若為觸控後抑制點擊）
   card.addEventListener('click', e => {
     if (card._suppressClick) {
       card._suppressClick = false;
@@ -48,6 +49,7 @@ cards.forEach(card => {
   });
 });
 
+// 放入圖片格（桌面拖放）
 slots.forEach(slot => {
   slot.addEventListener('dragover', e => e.preventDefault());
   slot.addEventListener('drop', e => {
@@ -63,14 +65,14 @@ let touchId = null;
 let ghost = null;
 let longPressTimer = null;
 let lastTouchClient = { x: 0, y: 0 };
-const LONG_PRESS_MS = 200;
+const LONG_PRESS_MS = 200; // 長按啟動拖曳的時間
 
 function startTouchDrag(card, touch) {
   touchDrag = true;
   touchCard = card;
   draggedCard = card;
 
-  // 建立幽靈卡片
+  // === 幽靈卡片永遠顯示正面 ===
   const originalInner = card.querySelector('.card-inner');
   const ghostInner = originalInner.cloneNode(true);
   ghostInner.classList.remove('flipped');
@@ -149,7 +151,7 @@ cards.forEach(card => {
     lastTouchClient = { x: t.clientX, y: t.clientY };
   }, { passive: false });
 
-  // ✅ 修正版 touchend：適用 iOS / Android
+  // ✅ 修正版：支援 iOS + Android 放入格子
   card.addEventListener('touchend', e => {
     clearTimeout(longPressTimer);
     const t = Array.from(e.changedTouches).find(tt => tt.identifier === touchId) || e.changedTouches[0];
@@ -160,18 +162,34 @@ cards.forEach(card => {
       return;
     }
 
-    // 改用實體座標比對（支援 iOS & Android）
-    let slot = null;
+    // 防止 Safari / Chrome 將 touchend 當成 click
+    e.preventDefault();
+
+    // 暫時隱藏幽靈卡片以確保命中底下元素
+    if (ghost) ghost.style.display = 'none';
+
     const touchX = t.clientX;
     const touchY = t.clientY;
+    let slot = null;
 
-    document.querySelectorAll('.image-slot').forEach(s => {
-      const rect = s.getBoundingClientRect();
-      if (touchX >= rect.left && touchX <= rect.right &&
-          touchY >= rect.top && touchY <= rect.bottom) {
-        slot = s;
-      }
-    });
+    // 先嘗試 elementFromPoint
+    const target = document.elementFromPoint(touchX, touchY);
+    if (target && target.closest('.image-slot')) {
+      slot = target.closest('.image-slot');
+    } else {
+      // 若 iOS 仍回 null，改用座標比對（含 scroll 偏移）
+      document.querySelectorAll('.image-slot').forEach(s => {
+        const rect = s.getBoundingClientRect();
+        const absLeft = rect.left + window.scrollX;
+        const absTop = rect.top + window.scrollY;
+        if (touchX + window.scrollX >= absLeft && touchX + window.scrollX <= absLeft + rect.width &&
+            touchY + window.scrollY >= absTop && touchY + window.scrollY <= absTop + rect.height) {
+          slot = s;
+        }
+      });
+    }
+
+    if (ghost) ghost.style.display = '';
 
     endTouchDrag(slot);
     touchId = null;
@@ -184,10 +202,11 @@ cards.forEach(card => {
   }, { passive: false });
 });
 
+// 放入圖片格（可重複使用）
 function dropToSlot(slot, card) {
   slot.innerHTML = '';
   const imgNode = card.querySelector('.card-inner').cloneNode(true);
-  imgNode.classList.remove('flipped');
+  imgNode.classList.remove('flipped'); // 放入時保持正面
   slot.appendChild(imgNode);
   slot.dataset.num = card.dataset.num;
 }
@@ -204,6 +223,7 @@ document.getElementById('checkOrder').addEventListener('click', () => {
     }
   });
 });
+
 
 
 
